@@ -1,5 +1,10 @@
 import sys
 import os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+if BASE_DIR not in sys.path:
+    sys.path.insert(0, BASE_DIR)
+
 import joblib
 from src.preprocessor import clean_text
 from src.heuristics import SpamHeuristicEngine
@@ -10,7 +15,9 @@ class SpamClassifier:
 
     rule-based heuristic scam/phishing analysis (SpamAssassin-style).
     """
-    def __init__(self, model_path: str = "models/spam_classifier_pipeline.joblib"):
+    def __init__(self, model_path: str = None):
+        if model_path is None:
+            model_path = os.path.join(BASE_DIR, "models", "spam_classifier_pipeline.joblib")
         if not os.path.exists(model_path):
             raise FileNotFoundError(
                 f"Model file '{model_path}' not found. Please run 'train.py' first."
@@ -42,7 +49,6 @@ class SpamClassifier:
         # Hybrid decision: either ML identifies spam OR strong heuristic scam rules trigger
         if ml_pred_label == 1 or scam_heuristic_flag:
             final_label = "SPAM"
-            # If triggered by heuristics, elevate confidence accordingly
             if scam_heuristic_flag and spam_prob < 0.85:
                 confidence = max(0.95, spam_prob)
                 spam_prob = confidence

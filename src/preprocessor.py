@@ -1,6 +1,4 @@
 import re
-import pandas as pd
-from src.email_dataset import EMAIL_SAMPLES
 
 
 def clean_text(text: str) -> str:
@@ -67,11 +65,14 @@ def clean_text(text: str) -> str:
     return text
 
 
-def load_and_clean_data(csv_path: str = "spam.csv", include_email_samples: bool = True) -> pd.DataFrame:
+def load_and_clean_data(csv_path: str = "spam.csv", include_email_samples: bool = True):
     """Load spam.csv with correct encoding, append email domain samples,
 
     and prepare a clean dataframe with 'label', 'label_text', and 'cleaned_text'.
     """
+    import pandas as pd
+    from src.email_dataset import EMAIL_SAMPLES
+
     encodings = ["latin-1", "utf-8", "cp1252", "iso-8859-1"]
     df = None
     for enc in encodings:
