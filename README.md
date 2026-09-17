@@ -20,7 +20,7 @@ Trained on `spam.csv` and augmented with real-world email threat vectors (419 ad
 
 ### Launch the Web Interface
 
-#### link- 
+#### link- **https://email-spam-classifier-8nul.onrender.com/**
 
 You can:
 - **Paste any email** into the input box and click **Scan & Classify Email**.
