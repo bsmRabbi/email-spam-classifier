@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SpamGuard AI — Professional Email Spam & Scam Classifier</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Header / Navigation Bar -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="m9 12 2 2 4-4"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>SpamGuard <span class="brand-badge">AI</span></h1>
+          <p>Hybrid ML & Heuristic Email Threat Classifier</p>
+        </div>
+      </div>
+      <div class="header-status">
+        <span class="status-indicator"></span>
+        <span class="status-text">Engine Online (99.2% Accuracy)</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="main-layout">
+    <div class="layout-grid">
+
+      <!-- LEFT COLUMN: Input Workspace & Upload Area -->
+      <section class="panel input-panel" aria-labelledby="input-panel-title">
+        <div class="panel-header">
+          <div>
+            <h2 id="input-panel-title" class="panel-title">Analyze Email</h2>
+            <p class="panel-subtitle">Paste raw email body or upload an email file (.eml, .txt)</p>
+          </div>
+          <button type="button" id="clear-btn" class="btn-text" title="Clear all input">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 6h18m-2 0v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6m3 0V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
+            </svg>
+            Clear
+          </button>
+        </div>
+
+        <!-- Sample Presets for Quick Testing -->
+        <div class="sample-chips-wrapper">
+          <span class="sample-label">Quick test samples:</span>
+          <div class="sample-chips">
+            <button type="button" class="chip" data-sample="419_scam">419 Wire Scam</button>
+            <button type="button" class="chip" data-sample="copyright_phishing">DMCA Extortion</button>
+            <button type="button" class="chip" data-sample="fake_invoice">Fake Invoice</button>
+            <button type="button" class="chip" data-sample="legit_meeting">Work Meeting (Ham)</button>
+            <button type="button" class="chip" data-sample="legit_inquiry">Inquiry (Ham)</button>
+          </div>
+        </div>
+
+        <!-- Input Mode Tabs -->
+        <div class="tabs-nav" role="tablist">
+          <button type="button" class="tab-btn active" id="tab-text" role="tab" aria-selected="true" aria-controls="view-text">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+              <polyline points="10 9 9 9 8 9"/>
+            </svg>
+            Paste Text
+          </button>
+          <button type="button" class="tab-btn" id="tab-file" role="tab" aria-selected="false" aria-controls="view-file">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+            Upload File
+          </button>
+        </div>
+
+        <!-- Tab Content 1: Direct Textarea -->
+        <div class="tab-view active" id="view-text" role="tabpanel" aria-labelledby="tab-text">
+          <div class="textarea-container">
+            <label for="email-content" class="visually-hidden">Email Message Content</label>
+            <textarea
+              id="email-content"
+              placeholder="Paste the full email header, subject line, or message body here to check for phishing, advance-fee fraud, or spam patterns..."
+              rows="12"
+              spellcheck="false"
+            ></textarea>
+            <div class="textarea-footer">
+              <span id="char-counter">0 characters · 0 words</span>
+              <button type="button" id="paste-btn" class="btn-inline" title="Paste from clipboard">
+                Paste from clipboard
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab Content 2: File Upload Area -->
+        <div class="tab-view" id="view-file" role="tabpanel" aria-labelledby="tab-file" hidden>
+          <div class="dropzone" id="file-dropzone">
+            <input type="file" id="file-input" accept=".eml,.txt,.msg" class="visually-hidden">
+            <div class="dropzone-content">
+              <div class="dropzone-icon">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+              </div>
+              <h3 class="dropzone-title">Drag & drop your email file here</h3>
+              <p class="dropzone-desc">Supports <strong>.eml</strong> (standard email export) and <strong>.txt</strong> files up to 5MB</p>
+              <button type="button" class="btn-secondary" id="browse-btn">Browse File</button>
+            </div>
+          </div>
+
+          <!-- File Selected Preview -->
+          <div class="file-preview-card" id="file-preview" style="display: none;">
+            <div class="file-info">
+              <div class="file-icon">📄</div>
+              <div>
+                <p class="file-name" id="file-name-display">message.eml</p>
+                <p class="file-size" id="file-size-display">14.2 KB</p>
+              </div>
+            </div>
+            <button type="button" class="btn-icon" id="remove-file-btn" title="Remove file">✕</button>
+          </div>
+        </div>
+
+        <!-- Primary Action -->
+        <div class="action-footer">
+          <button type="button" id="analyze-btn" class="btn-primary">
+            <span class="btn-text-content">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <circle cx="11" cy="11" r="8"/>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+              Scan & Classify Email
+            </span>
+            <span class="spinner" id="analyze-spinner" aria-hidden="true"></span>
+          </button>
+        </div>
+      </section>
+
+      <!-- RIGHT COLUMN: Inspection Result Card (Shows Beside) -->
+      <section class="panel result-panel" aria-labelledby="result-panel-title">
+        <div class="panel-header">
+          <div>
+            <h2 id="result-panel-title" class="panel-title">Inspection Results</h2>
+            <p class="panel-subtitle">Real-time threat assessment & confidence scores</p>
+          </div>
+        </div>
+
+        <!-- Idle State (Before Scan) -->
+        <div class="result-state idle-state" id="state-idle">
+          <div class="idle-illustration">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="2" y="4" width="20" height="16" rx="3"/>
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+            </svg>
+          </div>
+          <h3>Awaiting Content</h3>
+          <p>Enter email text or upload an <code>.eml</code> file on the left and click <strong>Scan & Classify</strong> to view complete analysis.</p>
+          <div class="feature-badges">
+            <span>🛡️ 419 Scam Detection</span>
+            <span>🎣 DMCA & Phishing Guard</span>
+            <span>⚡ 99.2% Precision</span>
+          </div>
+        </div>
+
+        <!-- Active Result State -->
+        <div class="result-state active-state" id="state-active" style="display: none;">
+          
+          <!-- Big Verdict Badge -->
+          <div class="verdict-banner" id="verdict-banner">
+            <div class="verdict-icon" id="verdict-icon">🚨</div>
+            <div class="verdict-details">
+              <span class="verdict-label">Classification Verdict</span>
+              <h3 class="verdict-heading" id="verdict-heading">SPAM DETECTED</h3>
+              <p class="verdict-summary" id="verdict-summary">This message exhibits high-confidence characteristics of spam or fraud.</p>
+            </div>
+          </div>
+
+          <!-- Metrics Overview Cards -->
+          <div class="metrics-grid">
+            <div class="metric-card">
+              <span class="metric-label">Model Confidence</span>
+              <span class="metric-value" id="confidence-val">99.8%</span>
+              <div class="progress-bar-bg">
+                <div class="progress-bar-fill" id="confidence-bar" style="width: 99.8%;"></div>
+              </div>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">Risk Category</span>
+              <span class="metric-value small" id="risk-category-val">High Suspicion</span>
+              <span class="metric-sub" id="heuristic-score-val">Heuristic Score: 16.5</span>
+            </div>
+          </div>
+
+          <!-- Probability Split -->
+          <div class="card-section">
+            <h4 class="section-heading">Probability Breakdown</h4>
+            <div class="prob-distribution">
+              <div class="prob-labels">
+                <span>Spam Probability: <strong id="spam-prob-text">99.8%</strong></span>
+                <span>Ham Probability: <strong id="ham-prob-text">0.2%</strong></span>
+              </div>
+              <div class="dual-bar">
+                <div class="bar-segment spam-segment" id="bar-spam" style="width: 99.8%;"></div>
+                <div class="bar-segment ham-segment" id="bar-ham" style="width: 0.2%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Triggered Heuristic Rules / Indicators -->
+          <div class="card-section" id="indicators-section">
+            <h4 class="section-heading">Detected Risk Indicators</h4>
+            <ul class="indicator-list" id="indicator-list">
+              <!-- Dynamically populated via JS -->
+            </ul>
+          </div>
+
+          <!-- Metadata & Cleaned Text Snippet -->
+          <div class="card-section">
+            <h4 class="section-heading">Content Inspection Details</h4>
+            <div class="meta-tags">
+              <span class="tag" id="meta-words">0 words</span>
+              <span class="tag" id="meta-chars">0 characters</span>
+              <span class="tag tag-accent" id="meta-engine">MultinomialNB + TF-IDF (1,2)-grams</span>
+            </div>
+            <div class="snippet-box">
+              <span class="snippet-label">Normalized Input Preview:</span>
+              <p class="snippet-text" id="snippet-text"></p>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="app-footer">
+    <div class="footer-container">
+      <p>SpamGuard AI Classifier · Machine Learning Model trained on 5,590+ verified communications.</p>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

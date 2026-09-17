@@ -1,0 +1,81 @@
+{
+  "best_model": "Multinomial Naive Bayes",
+  "models": {
+    "Multinomial Naive Bayes": {
+      "cv_f1": 0.952288242006329,
+      "test_accuracy": 0.9919499105545617,
+      "test_precision": 1.0,
+      "test_recall": 0.9407894736842105,
+      "test_f1": 0.9694915254237289,
+      "test_roc_auc": 0.9932984635501797,
+      "confusion_matrix": [
+        [
+          966,
+          0
+        ],
+        [
+          9,
+          143
+        ]
+      ],
+      "report": "              precision    recall  f1-score   support\n\n         Ham       0.99      1.00      1.00       966\n        Spam       1.00      0.94      0.97       152\n\n    accuracy                           0.99      1118\n   macro avg       1.00      0.97      0.98      1118\nweighted avg       0.99      0.99      0.99      1118\n"
+    },
+    "Complement Naive Bayes": {
+      "cv_f1": 0.9403052272810877,
+      "test_accuracy": 0.983005366726297,
+      "test_precision": 0.9290322580645162,
+      "test_recall": 0.9473684210526315,
+      "test_f1": 0.9381107491856677,
+      "test_roc_auc": 0.9932984635501797,
+      "confusion_matrix": [
+        [
+          955,
+          11
+        ],
+        [
+          8,
+          144
+        ]
+      ],
+      "report": "              precision    recall  f1-score   support\n\n         Ham       0.99      0.99      0.99       966\n        Spam       0.93      0.95      0.94       152\n\n    accuracy                           0.98      1118\n   macro avg       0.96      0.97      0.96      1118\nweighted avg       0.98      0.98      0.98      1118\n"
+    },
+    "Logistic Regression": {
+      "cv_f1": 0.9521636915710999,
+      "test_accuracy": 0.9901610017889088,
+      "test_precision": 0.9795918367346939,
+      "test_recall": 0.9473684210526315,
+      "test_f1": 0.9632107023411371,
+      "test_roc_auc": 0.9937615778576877,
+      "confusion_matrix": [
+        [
+          963,
+          3
+        ],
+        [
+          8,
+          144
+        ]
+      ],
+      "report": "              precision    recall  f1-score   support\n\n         Ham       0.99      1.00      0.99       966\n        Spam       0.98      0.95      0.96       152\n\n    accuracy                           0.99      1118\n   macro avg       0.99      0.97      0.98      1118\nweighted avg       0.99      0.99      0.99      1118\n"
+    },
+    "Calibrated Linear SVM": {
+      "cv_f1": 0.9639238153943623,
+      "test_accuracy": 0.9892665474060823,
+      "test_precision": 0.9666666666666667,
+      "test_recall": 0.9539473684210527,
+      "test_f1": 0.9602649006622517,
+      "test_roc_auc": 0.9941157240928408,
+      "confusion_matrix": [
+        [
+          961,
+          5
+        ],
+        [
+          7,
+          145
+        ]
+      ],
+      "report": "              precision    recall  f1-score   support\n\n         Ham       0.99      0.99      0.99       966\n        Spam       0.97      0.95      0.96       152\n\n    accuracy                           0.99      1118\n   macro avg       0.98      0.97      0.98      1118\nweighted avg       0.99      0.99      0.99      1118\n"
+    }
+  }
+}
